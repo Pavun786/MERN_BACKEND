@@ -29,7 +29,8 @@ async function InsertVerifyUser(name,email,password){
       <p>Regards</p>
       <p>Team</p>
       `
-     await newUser.save();
+     await newUser.save(); //save the details in verifyUser collection for temporerly
+     
      sendMail(email,"VerifyUser",content)
 
     }catch(e){
@@ -51,7 +52,7 @@ async function InsertSignUpUser(token){
         console.log(userVerify)
 
         if(userVerify){
-            const newUser = new User({
+            const newUser = new User({      // here we insert the user detail into User collection, when user activation done in mail.
                 
                 name: userVerify.name,
                 email: userVerify.email,
@@ -60,13 +61,13 @@ async function InsertSignUpUser(token){
             });
             console.log(newUser);
             await newUser.save();
-            await userVerify.deleteOne({token: token});
+            await userVerify.deleteOne({token: token}); //and user details also remove from verifyUser collection
             const content = `<h4>Registeration successfull</h4>
             <h5>welcome to the app</h5>
             <p>You are successfully registered</p>
             <p>Regards</p>
             <p>Team</p>`;
-            sendMail(newUser.email,"Registeration successful",content);
+            sendMail(newUser.email,"Registeration successful",content);  //mail send
             return `<h4>Hi,There</h4>
             <h5>welcome to the app</h5>
             <p>You are successfully registered</p>

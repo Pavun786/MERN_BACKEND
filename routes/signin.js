@@ -10,12 +10,13 @@ router.get("/:token",async (req,res)=>{
         // console.log(req.params.token)
      const response = await InsertSignUpUser(req.params.token);
 
-     console.log(response)
      res.status(200).send(response);
      
     } catch(e){
-      console.log(e)
-      res.status(500).send(
+      
+        console.log(e)
+      
+        res.status(500).send(
         `<html>
             <body>
             <h4>Registeration failed</h4>
@@ -33,6 +34,7 @@ router.post("/verify",async (req,res)=>{
 
     try{
         const {name,email,password} = await req.body;
+       
         console.log(name,email,password)
    
         const registerCredentials = await CheckUser(email);
@@ -40,16 +42,21 @@ router.post("/verify",async (req,res)=>{
         if(registerCredentials === false){
            
             await InsertVerifyUser(name,email,password);
+            
             res.status(200).send(true)
        
         } else if(registerCredentials === true){
-           res.status(200).send(false)
+           
+            res.status(200).send(false)
+      
         } else if(registerCredentials === "Server Busy"){
-           res.status(500).send("Server Busy")
+           
+            res.status(500).send("Server Busy")
         }
     }
     catch(error){
-       console.log(error)
+      
+        console.log(error)
     }
 })
 
